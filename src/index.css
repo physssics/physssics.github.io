@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  html, body {
+    @apply bg-slate-950 text-slate-100; 
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background-attachment: fixed;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-slate-900/50 backdrop-blur-md border border-slate-800 shadow-xl rounded-2xl;
+  }
+  
+  .simulation-view {
+    @apply relative w-full h-[400px] bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center;
+  }
+
+  .stat-badge {
+    @apply p-3 bg-black/60 backdrop-blur-md rounded-lg border border-white/10 text-xs font-mono text-blue-400;
+  }
+
+  .info-card {
+    @apply bg-slate-900 p-6 rounded-xl border border-slate-800;
+  }
+
+  .accent-block {
+    @apply bg-blue-900/20 p-6 rounded-xl border border-blue-900/30;
+  }
+
+  .equation-box {
+    @apply flex justify-center py-4 bg-black/40 rounded;
+  }
+
+  .link-card {
+    @apply p-4 bg-slate-900 rounded-xl flex items-center justify-between cursor-pointer hover:bg-slate-800 transition-colors;
+  }
+  
+  .link-card svg {
+    @apply text-slate-600 transition-colors;
+  }
+
+  .link-card:hover svg {
+    @apply text-blue-400;
+  }
+
+  .legend-card {
+    @apply flex items-start gap-4 p-4 rounded-xl bg-slate-900/30 border border-slate-800;
+  }
+
+  .accent-slider {
+    @apply w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer;
+  }
+}
