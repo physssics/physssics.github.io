@@ -22,7 +22,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-blue-500/30">
       <Header />
-
       <main className="max-w-6xl mx-auto px-6 py-12">
         <div className="mb-16">
           <motion.h2 
@@ -76,7 +75,7 @@ export default function App() {
               <div className="w-1 h-full bg-blue-400 rounded-full" />
               <div>
                 <p className="font-bold text-sm mb-1 uppercase tracking-wider text-blue-500">Магнитный поток</p>
-                <p className="text-xs text-slate-200">Силовые линии переменного магнитного поля, пронизывающие дно посуды.</p>
+                <p className="text-xs text-slate-200">Силовые линии переменного магнитного поля, пронизывающие дно посуды</p>
               </div>
             </div>
             <div className="legend-card">

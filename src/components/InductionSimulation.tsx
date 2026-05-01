@@ -74,16 +74,8 @@ export const InductionSimulation: React.FC<{power: number, frequency: number}> =
           const x = CX - 100 + i * 40;
           const yStart = iSign > 0 ? COIL_Y : GLASS_Y - 20;
           const yEnd = iSign > 0 ? GLASS_Y - 20 : COIL_Y;
-
           return (
-            <path
-              key={i}
-              d={`M ${x} ${yStart} L ${x} ${yEnd}`}
-              stroke="#3b82f6"
-              strokeWidth="2.5"
-              opacity={iAbs * 0.7}
-              markerEnd="url(#arrow)"
-            />
+            <path key={i} d={`M ${x} ${yStart} L ${x} ${yEnd}`} stroke="#3b82f6" strokeWidth="2.5" opacity={iAbs * 0.7} markerEnd="url(#arrow)" />
           );
         })}
 
@@ -92,7 +84,6 @@ export const InductionSimulation: React.FC<{power: number, frequency: number}> =
           
           <g transform="translate(0, -5)">
             <path d={`M 5,10 Q ${POT_W/2},-60 ${POT_W-5},10`} fill="#334155" stroke="#64748b" strokeWidth="3" />
-            <path d={`M 20,15 Q ${POT_W/2},-40 ${POT_W-20},15`} fill="none" stroke="#475569" strokeWidth="1" />
             <circle cx={POT_W/2} cy="-35" r="14" fill="#334155" stroke="#64748b" strokeWidth="2" />
             <rect x={POT_W/2 - 5} y="-25" width="10" height="15" fill="#334155" />
           </g>
@@ -102,24 +93,31 @@ export const InductionSimulation: React.FC<{power: number, frequency: number}> =
             <rect y="5" width={POT_W} height={7} fill="#cbd5e1" /> 
             <rect y="12" width={POT_W} height={15} fill="#0f172a" rx="2" /> 
 
+            <rect 
+              x="2" y={27 - skinPx} width={POT_W-4} height={skinPx} 
+              fill="#ef4444" filter="url(#glowHeat)"
+              style={{ opacity: 0.2 + pf * 0.6 }}
+            />
+
             <g transform="translate(0, 18)">
               {[-100, -50, 0, 50, 100].map((offsetX, i) => (
                 <g key={i} transform={`translate(${POT_W/2 + offsetX}, 0)`}>
                    <motion.ellipse
-                     rx="20" ry={6} fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="8 6" filter="url(#glowEddy)"
-                     animate={{ strokeDashoffset: i % 2 === 0 ? [0, 50] : [0, -50], opacity: [0.2, 0.8, 0.2] }}
-                     transition={{ strokeDashoffset: { duration: 1 / (0.5 + ff * 2), repeat: Infinity, ease: "linear" }, opacity: { duration: 1.5, repeat: Infinity } }}
-                     style={{ visibility: iAbs > 0.1 ? 'visible' : 'hidden' }}
+                     rx="20" ry={6} fill="none" stroke="#fbbf24" strokeWidth="3" strokeDasharray="8 6" filter="url(#glowEddy)"
+                     animate={{ 
+                       strokeDashoffset: i % 2 === 0 ? [0, 50] : [0, -50]
+                     }}
+                     transition={{ 
+                       strokeDashoffset: { duration: 1 / (0.5 + ff * 2.5), repeat: Infinity, ease: "linear" }
+                     }}
+                     style={{ 
+                       opacity: iAbs * (0.3 + pf * 0.7),
+                       visibility: iAbs > 0.05 ? 'visible' : 'hidden' 
+                     }}
                    />
                 </g>
               ))}
             </g>
-
-            <rect 
-              x="2" y={27 - skinPx} width={POT_W-4} height={skinPx} 
-              fill="#ef4444" filter="url(#glowHeat)"
-              style={{ opacity: 0.2 + pf * 0.7 }}
-            />
 
             <text x={POT_W + 10} y="4" fontSize="10" className="fill-slate-400 font-black">18/10</text>
             <text x={POT_W + 10} y="11" fontSize="10" className="fill-slate-500 font-black">Al</text>
