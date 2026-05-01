@@ -30,7 +30,6 @@ export const InductionSimulation: React.FC<{power: number, frequency: number}> =
   const ff = (frequency - MIN_FREQ) / (MAX_FREQ - MIN_FREQ);
   
   const omega = 2 * Math.PI * frequency * 1e3; 
-
   const delta_m = Math.sqrt((2 * RHO) / (omega * MU0 * MUR)); 
   const skinDepth_mm = delta_m * 1e3;
   const skinPx = Math.max(3, skinDepth_mm * 30); 
@@ -74,9 +73,7 @@ export const InductionSimulation: React.FC<{power: number, frequency: number}> =
           const x = CX - 100 + i * 40;
           const yStart = iSign > 0 ? COIL_Y : GLASS_Y - 20;
           const yEnd = iSign > 0 ? GLASS_Y - 20 : COIL_Y;
-          return (
-            <path key={i} d={`M ${x} ${yStart} L ${x} ${yEnd}`} stroke="#3b82f6" strokeWidth="2.5" opacity={iAbs * 0.7} markerEnd="url(#arrow)" />
-          );
+          return <path key={i} d={`M ${x} ${yStart} L ${x} ${yEnd}`} stroke="#3b82f6" strokeWidth="2.5" opacity={iAbs * 0.7} markerEnd="url(#arrow)" />;
         })}
 
         <g transform={`translate(${CX - POT_W/2}, 70)`}>
@@ -96,23 +93,29 @@ export const InductionSimulation: React.FC<{power: number, frequency: number}> =
             <rect 
               x="2" y={27 - skinPx} width={POT_W-4} height={skinPx} 
               fill="#ef4444" filter="url(#glowHeat)"
-              style={{ opacity: 0.2 + pf * 0.6 }}
+              style={{ opacity: 0.15 + pf * 0.6 }}
             />
 
-            <g transform="translate(0, 18)">
+            <g transform="translate(0, 19)">
               {[-100, -50, 0, 50, 100].map((offsetX, i) => (
                 <g key={i} transform={`translate(${POT_W/2 + offsetX}, 0)`}>
                    <motion.ellipse
-                     rx="20" ry={6} fill="none" stroke="#fbbf24" strokeWidth="3" strokeDasharray="8 6" filter="url(#glowEddy)"
+                     rx="22" ry={9}
+                     fill="none"
+                     stroke="#fbbf24"
+                     strokeWidth="3.5"
+                     strokeDasharray="10 8"
+                     filter="url(#glowEddy)"
                      animate={{ 
-                       strokeDashoffset: i % 2 === 0 ? [0, 50] : [0, -50]
+                       strokeDashoffset: i % 2 === 0 ? [0, 100] : [0, -100],
+                       scale: [0.95, 1.05, 0.95]
                      }}
                      transition={{ 
-                       strokeDashoffset: { duration: 1 / (0.5 + ff * 2.5), repeat: Infinity, ease: "linear" }
+                       strokeDashoffset: { duration: 1 / (0.4 + ff * 2), repeat: Infinity, ease: "linear" },
+                       scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
                      }}
                      style={{ 
-                       opacity: iAbs * (0.3 + pf * 0.7),
-                       visibility: iAbs > 0.05 ? 'visible' : 'hidden' 
+                      opacity: Math.max(0.4, iAbs * (0.6 + pf * 0.9))
                      }}
                    />
                 </g>
@@ -141,9 +144,7 @@ export const InductionSimulation: React.FC<{power: number, frequency: number}> =
                 <g opacity={iAbs}>
                   {showCross ? (
                     <g><line x1="-5" y1="-5" x2="5" y2="5" stroke="#fbbf24" strokeWidth="2"/><line x1="5" y1="-5" x2="-5" y2="5" stroke="#fbbf24" strokeWidth="2"/></g>
-                  ) : (
-                    <circle r="4" fill="#fbbf24" />
-                  )}
+                  ) : (<circle r="4" fill="#fbbf24" />)}
                 </g>
               </g>
             );
@@ -170,11 +171,11 @@ export const InductionSimulation: React.FC<{power: number, frequency: number}> =
           <span className="text-white text-lg font-black italic">{(iAbs * pf * 2.5).toFixed(2)} <span className="text-blue-500 text-xs">Вб</span></span>
         </div>
         <div className="flex flex-col border-l-4 border-purple-500 bg-slate-900/95 px-4 py-1.5 rounded-r-xl backdrop-blur-md">
-          <span className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">Цикл. частота</span>
-          <span className="text-purple-400 text-lg font-black">{(omega/1000).toFixed(0)} <span className="text-slate-500 text-xs font-normal">рад/с</span></span>
+          <span className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">Цикл. частота (ω)</span>
+          <span className="text-purple-400 text-lg font-black">{(omega/1000).toFixed(0)} <span className="text-slate-500 text-xs font-normal">k-rad/s</span></span>
         </div>
         <div className="flex flex-col border-l-4 border-orange-500 bg-slate-900/95 px-4 py-1.5 rounded-r-xl backdrop-blur-md">
-          <span className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">Скин-слой</span>
+          <span className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">Скин-слой (δ)</span>
           <span className="text-orange-400 text-lg font-black">{skinDepth_mm.toFixed(3)} <span className="text-slate-500 text-xs font-normal">мм</span></span>
         </div>
       </div>
